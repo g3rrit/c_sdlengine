@@ -11,10 +11,20 @@ FLAGS := -wall
 LIB_SDL_I := .\mingw32sdl\include\SDL2
 LIB_SDL_DLL := $(LIB_DIR)\sdl\win64
 
-SRCF := $(shell find $(SRC_DIR) -name *.c)
+#-------------------- source
 
-INC_DIRS := $(SRC_DIR)
+#core
+SRCF := .\src\main.c .\src\input\input.c
+
+#util
+UTIL := .\util\c-samples\src
+SRCF += $(UTIL)\container\container.c
+
+#------------------- includes
+INC_DIRS := -I.\src
+INC_DIRS += -I$(UTIL)\container
+
 
 all:
-	$(CC) -o $(BUILD_DIR)\$(TARGET) .\src\main.c -I$(LIB_SDL_I) -I$(INC_DIRS) -L.\mingw32sdl\lib -lmingw32 -lSDL2main -lSDL2 
+	$(CC) -o $(BUILD_DIR)\$(TARGET) $(SRCF) -I$(LIB_SDL_I) $(INC_DIRS) -L.\mingw32sdl\lib -lmingw32 -lSDL2main -lSDL2 
 

@@ -1,0 +1,3 @@
+[submodule "util/c-samples"]
+	path = util/c-samples
+	url = https://github.com/pearisgreen/c-samples
