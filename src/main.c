@@ -6,6 +6,14 @@
 
 #include "mstd.h"
 
+#define INPUT_C
+#include "input.c"
+#undef INPUT_C
+
+#define TEST_OBJECT_C
+#include "test_object.c"
+#undef TEST_OBJECT_C
+
 char* randStr(uint32_t length);
 
 int main(int argc, char *argv[])
@@ -48,7 +56,6 @@ int main(int argc, char *argv[])
     // ---------- INIT SDL
 
     // ---------- MAIN LOOP
-    SDL_Event sdlevent;
     bool quit = false;
     struct timeval currentTime;
     gettimeofday(&currentTime,NULL);
@@ -63,21 +70,21 @@ int main(int argc, char *argv[])
     int FPS = 0;
     //fontManager.add("fpstxt","FPS:",gameState.WIDTH-100,5,60,15);
     //fontManager.add("fpsnum","00",gameState.WIDTH-40,5,40,15);
+    input_init();
+
+    //          TEST
+    struct test_object t_object;
+    test_object_init(&t_object);
+
+    input_add_object(&(t_object.input_obj));
+    //          TEST
+
     while(!quit)
     {
-        while(SDL_PollEvent(&sdlevent))
-        {
-            if(sdlevent.type==SDL_QUIT)
-            {
-                quit=true;
-            }
-            else if(sdlevent.type==SDL_KEYDOWN)
-            {
-            }
-            else if(sdlevent.type==SDL_MOUSEBUTTONDOWN)
-            {
-            }
-        }
+
+        //update input
+        input_update();
+
         gettimeofday(&currentTime,NULL);
         firstTime=(currentTime.tv_sec*1000000+currentTime.tv_usec)/1000000.0;
         passedTime=firstTime-lastTime;
@@ -130,18 +137,4 @@ int main(int argc, char *argv[])
 }
 
 
-char* randStr(uint32_t length)
-{
-    char charset[] = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char* res = malloc(sizeof(char)*(length));
-    res[length-1]=0;
-    length--;
-    while(length>0)
-    {
-        uint32_t index = (double)rand()/RAND_MAX*(sizeof(charset)-1);
-        res[length-1]=charset[index];
-        length--;
-    }
-    printf("random string: %s\n",res);
-    return res;
-}
+

@@ -14,7 +14,10 @@ LIB_SDL_DLL := $(LIB_DIR)\sdl\win64
 #-------------------- source
 
 #core
-SRCF := .\src\main.c .\src\input\input.c
+SRCF := .\src\main.c .\src\input\input.c .\src\object\object.c
+
+#objects
+SRCF += .\src\object\test_object.c
 
 #util
 UTIL := .\util\c-samples\src
@@ -23,6 +26,8 @@ SRCF += $(UTIL)\container\container.c
 #------------------- includes
 INC_DIRS := -I.\src
 INC_DIRS += -I$(UTIL)\container
+INC_DIRS += -I.\src\input
+INC_DIRS += -I.\src\object
 
 
 all:
