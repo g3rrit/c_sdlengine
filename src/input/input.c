@@ -52,6 +52,7 @@ void input_update()
         //todo: handle quit event
         if(sdlevent.type==SDL_QUIT)
         {
+            game_container.quit = true;
         }
 
         struct input_object *temp_input_object;
