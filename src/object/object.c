@@ -8,7 +8,7 @@
 
 struct object
 {
-    char *id;
+    int id;
     void *super;
 };
 
@@ -25,18 +25,19 @@ char* rand_str(uint32_t length);
 //src
 #ifndef OBJECT_C
 
+int current_object_id = 0;
+
 //---------- OBJECT ---------- 
 
 void object_init(struct object *this, void *super)
 {
     this->super = super;
-    this->id = rand_str(5);
+    this->id = current_object_id;
+    current_object_id++;
 }
 
 void object_delete(struct object *this)
 {
-    if(this->id)
-        free(this->id);
 }
 
 //---------- OBJECT ---------- 

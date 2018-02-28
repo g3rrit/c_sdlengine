@@ -30,9 +30,9 @@ void game_container_delete();
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define INPUT_C
-#include "input.c"
-#undef INPUT_C
+#define EVENTH_C
+#include "eventh.c"
+#undef EVENTH_C
 
 #define TEST_OBJECT_C
 #include "test_object.c"
@@ -96,20 +96,20 @@ void game_container_start()
     int FPS = 0;
     //fontManager.add("fpstxt","FPS:",gameState.WIDTH-100,5,60,15);
     //fontManager.add("fpsnum","00",gameState.WIDTH-40,5,40,15);
-    input_init();
+    event_init();
 
     //          TEST
     struct test_object t_object;
     test_object_init(&t_object);
 
-    input_add_object(&(t_object.input_obj));
+    event_add_object(&(t_object.event_obj));
     //          TEST
 
     while(!game_container.quit)
     {
 
-        //update input
-        input_update();
+        //update event
+        event_update();
 
         gettimeofday(&currentTime,NULL);
         firstTime=(currentTime.tv_sec*1000000+currentTime.tv_usec)/1000000.0;
