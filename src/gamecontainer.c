@@ -22,6 +22,8 @@ void game_container_delete();
 //src
 #ifndef GAMECONTAINER_C
 
+#include "SDL_ttf.h"
+
 #include "mstd.h"
 
 #include <stdio.h>
@@ -40,6 +42,10 @@ void game_container_delete();
 #include "scenemanager.c"
 #undef SCENEMANAGER_C
 
+#define FONTMANAGER_C
+#include "fontmanager.c"
+#undef FONTMANAGER_C
+
 int game_container_init()
 {
     // ---------- INIT SDL
@@ -49,16 +55,7 @@ int game_container_init()
     }
     printf("sdl inited\n");
 
-    /*
-    TTF_Init();
-    window.font=TTF_OpenFont("/../res/font/BitFont.ttf",30);
-    if(!window.font){
-        printf("error loading font\n");
-        SDL_Quit();
-        TTF_Quit();
-        return false;
-    }
-    */
+    font_manager_init();
 
     game_container.window = SDL_CreateWindow("Explore",100,100,800,400,SDL_WINDOW_SHOWN);
     if(!game_container.window)
@@ -159,9 +156,8 @@ void game_container_start()
 void game_container_delete()
 {
     scene_manager_delete();
+    font_manager_delete();
     // ---------- QUIT SDL
-    //TTF_CloseFont(window.font);
-    //TTF_Quit();
     SDL_DestroyWindow(game_container.window);
     SDL_DestroyRenderer(game_container.renderer);
     SDL_Quit();

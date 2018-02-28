@@ -7,9 +7,14 @@
 #include "sprite.c"
 #undef SPRITE_C
 
+#define TEXT_C
+#include "text.c"
+#undef TEXT_C
+
 struct scene
 {
     struct sprite *tsprite;
+    struct text *ttext;
     int id; 
 };
 
@@ -49,6 +54,8 @@ void scene_init(struct scene *this)
 {
     this->tsprite = malloc(sizeof(struct sprite));
     sprite_init(this->tsprite, TEX_TEST);
+    this->ttext = malloc(sizeof(struct text));
+    text_init(this->ttext, "hello world");
 }
 
 void scene_update(struct scene *this, double dt)
@@ -59,11 +66,15 @@ void scene_update(struct scene *this, double dt)
 void scene_draw(struct scene *this)
 {
     sprite_draw(this->tsprite);
+    text_draw(this->ttext);
 }
 
 void scene_delete(struct scene *this)
 {
+    sprite_delete(this->tsprite);
     free(this->tsprite);
+    text_delete(this->ttext);
+    free(this->ttext);
 }
 
 //---------- SCENE
