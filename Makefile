@@ -14,7 +14,8 @@ LIB_SDL_DLL := $(LIB_DIR)\sdl\win64
 #-------------------- source
 
 #core
-SRCF := .\src\main.c .\src\input\eventh.c .\src\object\object.c
+SRCF := .\src\main.c .\src\input\eventobject.c .\src\object\object.c
+SRCF += .\src\input\clickobject.c
 SRCF += .\src\gamecontainer.c
 SRCF += .\src\scene\scenemanager.c
 SRCF += .\src\text\fontmanager.c

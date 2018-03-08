@@ -30,9 +30,9 @@ void game_container_delete();
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define EVENTH_C
-#include "eventh.c"
-#undef EVENTH_C
+#define EVENTOBJECT_C
+#include "eventobject.c"
+#undef EVENTOBJECT_C
 
 #define TEST_OBJECT_C
 #include "test_object.c"

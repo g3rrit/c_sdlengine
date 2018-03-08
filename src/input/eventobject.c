@@ -1,6 +1,6 @@
 //hdr
-#ifndef EVENTH_H
-#define EVENTH_H
+#ifndef EVENTOBJECT_H
+#define EVENTOBJECT_H
 #include "mstd.h"
 
 #define OBJECT_C
@@ -18,16 +18,22 @@ void event_object_init(struct event_object *this, struct object *obj, void (*upd
 
 void event_init();
 
-void event_add_object();
+void event_add_object(struct event_object *event_obj);
 
 void event_remove_object(int id);
 
 void event_update();
 
+void event_delete();
+
 #endif
 
 //src
-#ifndef EVENTH_C
+#ifndef EVENTOBJECT_C
+
+#define CLICKOBJECT_C
+#include "clickobject.c"
+#undef CLICKOBJECT_C
 
 struct vector event_object_v;
 
@@ -64,6 +70,10 @@ void event_update()
     SDL_Event sdlevent;
     while(SDL_PollEvent(&sdlevent))
     {
+        //handle click events
+        if(sdlevent.type == SDL_MOUSEBUTTONDOWN)
+            click_update();
+
         //todo: handle quit event
         if(sdlevent.type==SDL_QUIT)
         {
@@ -79,5 +89,9 @@ void event_update()
     }
 }
 
+void event_delete()
+{
+    vector_delete(&event_object_v);
+}
 
 #endif
