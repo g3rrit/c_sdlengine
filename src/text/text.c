@@ -62,6 +62,7 @@ void text_update_text(struct text *this, char *txt)
     this->txt = malloc(sizeof(strlen(txt) + 1));
     strcpy(this->txt, txt);
 
+
     SDL_Surface *surface = TTF_RenderText_Solid(FONT_DEFAULT, this->txt, this->color);
     this->tex = SDL_CreateTextureFromSurface(game_container.renderer, surface);
     SDL_FreeSurface(surface);
