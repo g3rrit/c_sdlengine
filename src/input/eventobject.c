@@ -11,6 +11,7 @@
 struct event_object
 {
     struct object *obj;
+    struct list_node *node;
     void (*update_event)(struct object *obj, SDL_Event *event);
 };
 
@@ -20,7 +21,7 @@ void event_init();
 
 void event_add_object(struct event_object *event_obj);
 
-void event_remove_object(int id);
+void event_remove_object(struct event_object *event_obj);
 
 void event_update();
 
@@ -35,7 +36,7 @@ void event_delete();
 #include "clickobject.c"
 #undef CLICKOBJECT_C
 
-struct vector event_object_v;
+struct list event_object_l;
 
 void event_object_init(struct event_object *this, struct object *obj, void (*update_event)(struct object *obj, SDL_Event *event))
 {
@@ -45,24 +46,32 @@ void event_object_init(struct event_object *this, struct object *obj, void (*upd
 
 void event_init()
 {
-    vector_init(&event_object_v, sizeof(struct event_object*), 100);
+    list_init(&event_object_l);
 }
 
 void event_add_object(struct event_object *event_obj)
 {
-    vector_push_back(&event_object_v, event_obj); 
+    event_obj->node = list_push_back(&event_object_l, event_obj); 
 }
 
-void event_remove_object(int id)
+void event_remove_object(struct event_object *event_obj)
 {
-    for(int i = 0; i < event_object_v.size; i++)
+    list_remove_node(&event_object_l, event_obj->node);
+    /*
+    for(int i = 0; i < event_object_l.size; i++)
     {
-        if(((struct event_object*)vector_at(&event_object_v, i))->obj->id == id)
+        if(((struct event_object*)list_at(&event_object_l, i))->obj->id == id)
         {
-            vector_remove_at(&event_object_v, i);
+            list_remove_at(&event_object_l, i);
             break;
         }
     }
+    */
+}
+
+void *for_each_event_update(struct event_object *data, SDL_Event *event, struct list_info *info)
+{
+    data->update_event(data->obj, event);
 }
 
 void event_update()
@@ -80,18 +89,21 @@ void event_update()
             game_container.quit = true;
         }
 
+        list_for_each(&event_object_l, &for_each_event_update, &sdlevent);
+        /*
         struct event_object *temp_event_object;
-        for(int i = 0; i < event_object_v.size; i++)
+        for(int i = 0; i < event_object_l.size; i++)
         {
-            temp_event_object = vector_at(&event_object_v, i);
+            temp_event_object = list_at(&event_object_l, i);
             temp_event_object->update_event(temp_event_object->obj, &sdlevent);
         }
+        */
     }
 }
 
 void event_delete()
 {
-    vector_delete(&event_object_v);
+    list_delete(&event_object_l);
 }
 
 #endif

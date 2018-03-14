@@ -25,7 +25,7 @@ SRCF += .\src\object\test_object.c
 
 #util
 UTIL := .\util\c-samples\src
-SRCF += $(UTIL)\container\container.c
+SRCF += $(UTIL)\container\container.c $(UTIL)\container\list.c $(UTIL)\container\map.c $(UTIL)\container\vector.c
 
 #gfx
 SRCF += .\src\gfx\sprite.c
@@ -44,5 +44,5 @@ INC_DIRS += -I.\src\text
 
 
 all:
-	$(CC) -o $(BUILD_DIR)\$(TARGET) $(SRCF) -I$(LIB_SDL_I) $(INC_DIRS) -L.\mingw32sdl\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image  -lSDL2_ttf
+	$(CC) -w -o $(BUILD_DIR)\$(TARGET) $(SRCF) -I$(LIB_SDL_I) $(INC_DIRS) -L.\mingw32sdl\lib -lmingw32 -lSDL2main -lSDL2 -lSDL2_image  -lSDL2_ttf
 

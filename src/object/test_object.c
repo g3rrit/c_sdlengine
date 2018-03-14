@@ -60,7 +60,8 @@ void test_object_update_event(struct object *obj, SDL_Event *event)
     if(event->key.keysym.sym == SDLK_a)
     {
         printf("pressed a button -> removing object from event vector\n");
-        event_remove_object(obj->id);
+        struct test_object *t_ob = obj->super;
+        event_remove_object(&t_ob->event_obj);
     }
 }
 

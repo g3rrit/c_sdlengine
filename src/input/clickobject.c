@@ -13,6 +13,7 @@
 struct click_object
 {
     struct object *obj;
+    struct list_node *node;
     void (*fun)(struct object *obj,int x, int y, int flag);
 };
 
@@ -20,9 +21,9 @@ void click_object_init(struct click_object *this, struct object *obj, void (*fun
 
 void click_init();
 
-void click_add_object(struct click_object *obj);
+void click_add_object(struct click_object *c_obj);
 
-void click_remove_object(int id);
+void click_remove_object(struct click_object *c_obj);
 
 void click_update();
 
@@ -35,7 +36,7 @@ void click_delete();
 
 #include "mstd.h"
 
-struct vector click_object_v;
+struct list click_object_l;
 
 void click_object_init(struct click_object *this, struct object *obj, void (*fun)(struct object *obj, int x, int y, int flag))
 {
@@ -45,25 +46,42 @@ void click_object_init(struct click_object *this, struct object *obj, void (*fun
 
 void click_init()
 {
-    vector_init(&click_object_v, sizeof(struct click_object*), 10);
+    list_init(&click_object_l);
 }
 
 void click_add_object(struct click_object *c_obj)
 {
-    vector_push_back(&click_object_v, c_obj);
+    c_obj->node = list_push_back(&click_object_l, c_obj);
 }
 
-void click_remove_object(int id)
+void click_remove_object(struct click_object *c_obj)
 {
-    for(int i = 0; i < click_object_v.size; i++)
+    list_remove_node(&click_object_l, c_obj->node);
+    /*
+    for(int i = 0; i < click_object_l.size; i++)
     {
-        if(((struct click_object*)vector_at(&click_object_v, i))->obj->id == id)
+        if(((struct click_object*)list_at(&click_object_l, i))->obj->id == id)
         {
-            vector_remove_at(&click_object_v, i);
+            list_remove_at(&click_object_l, i);
             break;
         }
     }
+    */
 }
+
+struct click_event_s
+{
+    int x;
+    int y;
+    int flag;
+};
+
+void *for_each_click_update(struct click_object *c_obj, struct click_event_s *c_ev, struct list_info *info)
+{
+    c_obj->fun(c_obj->obj, c_ev->x, c_ev->y, c_ev->flag);
+    return 0;
+}
+
 
 void click_update()
 {
@@ -71,17 +89,24 @@ void click_update()
     int y;
     SDL_GetMouseState(&x, &y);
 
+    struct click_event_s c_ev;
+    c_ev.x = x;
+    c_ev.y = y;
+    c_ev.flag = 1;
+    list_for_each(&click_object_l, &for_each_click_update, &c_ev);
+    /*
     struct click_object *temp_click_o;
-    for(int i = 0; i < click_object_v.size; i++)
+    for(int i = 0; i < click_object_l.size; i++)
     {
-        temp_click_o = vector_at(&click_object_v, i);
+        temp_click_o = list_at(&click_object_l, i);
         temp_click_o->fun(temp_click_o->obj, x, y, 1);
     }
+    */
 }
 
 void click_delete()
 {
-    vector_delete(&click_object_v);
+    list_delete(&click_object_l);
 }
 
 

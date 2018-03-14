@@ -12,6 +12,18 @@
 #include "container.c"
 #undef CONTAINER_C
 
+#define MAP_C
+#include "map.c"
+#undef MAP_C
+
+#define LIST_C
+#include "list.c"
+#undef LIST_C
+
+#define VECTOR_C
+#include "vector.c"
+#undef VECTOR_C
+
 #define GAMECONTAINER_C
 #include "gamecontainer.c"
 #undef GAMECONTAINER_C
