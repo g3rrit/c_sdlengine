@@ -30,10 +30,6 @@ void game_container_delete();
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define EVENTOBJECT_C
-#include "eventobject.c"
-#undef EVENTOBJECT_C
-
 #define TEST_OBJECT_C
 #include "test_object.c"
 #undef TEST_OBJECT_C
@@ -96,13 +92,11 @@ void game_container_start()
     int FPS = 0;
     //fontManager.add("fpstxt","FPS:",gameState.WIDTH-100,5,60,15);
     //fontManager.add("fpsnum","00",gameState.WIDTH-40,5,40,15);
-    event_init();
+    handle_init();
 
     //          TEST
     struct test_object t_object;
     test_object_init(&t_object);
-
-    event_add_object(&(t_object.event_obj));
     //          TEST
 
     while(!game_container.quit)
@@ -120,6 +114,7 @@ void game_container_start()
         while(unprocessedTime>=frameCap)
         {
             //update
+            update_update(frameCap);
             //gameContainer.update((float)frameCap);
             scene_manager_update(frameCap);
 
@@ -140,6 +135,8 @@ void game_container_start()
             SDL_RenderClear(game_container.renderer);
             //draw
             //gameContainer.draw();
+            draw_update(frameCap); 
+            //
             scene_manager_draw();
             SDL_RenderPresent(game_container.renderer);
             frames++;

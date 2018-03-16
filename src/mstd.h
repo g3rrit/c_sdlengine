@@ -28,6 +28,10 @@
 #include "gamecontainer.c"
 #undef GAMECONTAINER_C
 
+#define HANDLEOBJECT_C
+#include "handleobject.c"
+#undef HANDLEOBJECT_C
+
 #include "texture_def.h"
 
 typedef int bool;

@@ -2,9 +2,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "mstd.h"
-
 //---------- OBJECT ---------- 
+#include "stdint.h"
 
 struct object
 {
@@ -24,6 +23,8 @@ char* rand_str(uint32_t length);
 
 //src
 #ifndef OBJECT_C
+
+#include "stdlib.h"
 
 int current_object_id = 0;
 
