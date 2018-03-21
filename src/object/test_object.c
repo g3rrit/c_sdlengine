@@ -57,6 +57,7 @@ void test_object_update_event(struct object *obj, SDL_Event *event)
         printf("pressed a button -> removing object from event vector\n");
         struct test_object *t_ob = obj->super;
         handle_remove(H_EVENT, &t_ob->event_obj);
+        printf("error here\n");
     }
 }
 
