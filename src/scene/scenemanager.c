@@ -36,6 +36,10 @@ struct
 
 void scene_manager_init();
 
+void scene_manager_push(struct scene *p_s);
+
+void scene_manager_pop();
+
 void scene_manager_update(double dt);
 
 void scene_manager_draw();
@@ -96,8 +100,15 @@ void scene_delete(struct scene *this)
 
 void scene_manager_init()
 {
-    scene_manager.active_scene = malloc(sizeof(struct scene)); 
-    scene_init(scene_manager.active_scene);
+}
+
+void scene_manager_push(struct scene *p_s)
+{
+    scene_manager.active_scene = p_s;
+}
+
+void scene_manager_pop()
+{
 }
 
 void scene_manager_update(double dt)

@@ -1,0 +1,41 @@
+<build>
+
+    <target value="test">
+
+        <flag output="build/program"/>
+
+        <source value="src/main.c"/>
+        <source value="src/object/test_object.c"/>
+
+    </target>
+
+    <flag linkdir="mingw32sdl/lib"/>
+    <flag link="mingw32"/>
+    <flag link="SDL2main"/>
+    <flag link="SDL2"/>
+    <flag link="SDL2_image"/>
+    <flag link="SDL2_ttf"/>
+
+    <include value="util/c-samples/src/container"/>
+
+    <flag include="mingw32sdl/include/SDL2"/>
+
+    <flag include="src"/>
+
+    <source value="src/gamecontainer.c"/>
+
+    <flag include="src/gfx"/>
+    <source value="src/gfx/sprite.c"/>
+
+    <flag include="src/object"/>
+    <source value="src/object/object.c"/>
+    <source value="src/object/handleobject.c"/>
+
+    <flag include="src/scene"/>
+    <source value="src/scene/scenemanager.c"/>
+
+    <flag include="src/text"/>
+    <source value="src/text/fontmanager.c"/>
+    <source value="src/text/text.c"/>
+
+</build>
