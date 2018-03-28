@@ -9,6 +9,8 @@
 
     </target>
 
+    <flag other="-w"/>
+
     <flag linkdir="mingw32sdl/lib"/>
     <flag link="mingw32"/>
     <flag link="SDL2main"/>
