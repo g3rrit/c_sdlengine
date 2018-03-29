@@ -5,13 +5,21 @@
 //---------- OBJECT ---------- 
 #include "stdint.h"
 
+#ifndef SCENE_C
+#define SCENE_C
+#include "scene.c"
+#undef SCENE_C
+#endif
+
 struct object
 {
     int id;
     void *super;
+
+    struct scene *scene_o;
 };
 
-void object_init(struct object *this, void *super);
+void object_init(struct object *this, void *super, struct scene *scene_o);
 
 void object_delete(struct object *this);
 
@@ -30,10 +38,11 @@ int current_object_id = 0;
 
 //---------- OBJECT ---------- 
 
-void object_init(struct object *this, void *super)
+void object_init(struct object *this, void *super, struct scene *scene_o)
 {
     this->super = super;
     this->id = current_object_id;
+    this->scene_o = scene_o;
     current_object_id++;
 }
 

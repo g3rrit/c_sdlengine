@@ -39,9 +39,11 @@ void text_delete(struct text *this);
 #include "SDL_ttf.h"
 #include "string.h"
 
+#ifndef FONTMANAGER_C
 #define FONTMANAGER_C
 #include "fontmanager.c"
 #undef FONTMANAGER_C
+#endif
 
 void text_init(struct text *this, char *txt)
 {

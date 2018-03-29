@@ -2,9 +2,11 @@
 #ifndef HANDLEOBJECT_H
 #define HANDLEOBJECT_H
 
+#ifndef OBJECT_C
 #define OBJECT_C
 #include "object.c"
 #undef OBJECT_C
+#endif
 
 #define HANDLE_SIZE 4
 
@@ -28,19 +30,21 @@ void handle_object_init(struct handle_object *this, struct object *obj, void (*f
 
 // ---- HANDLE -----
 
-void handle_init();
+struct handle
+{
+    struct list *handle_array;
+    int size;
+};
 
-void handle_add(int handle_type, struct handle_object *h_object);
+void handle_init(struct handle *this, int size);
 
-void handle_remove(int handle_type, struct handle_object *h_object);
+void handle_add(struct handle *this, int handle_type, struct handle_object *h_object);
 
-void handle_dispatch(int handle_type, void *data);
+void handle_remove(struct handle *this, int handle_type, struct handle_object *h_object);
 
-void handle_delete();
+void handle_dispatch(struct handle *this, int handle_type, void *data);
 
-// ---- HANDLE FUNCTIONS -----
-
-void event_update();
+void handle_delete(struct handle *this);
 
 struct click_data
 {
@@ -49,20 +53,12 @@ struct click_data
     int flag;
 };
 
-void click_update();
-
-void update_update(double dt);
-
-void draw_update(double dt);
-
 #endif
 
 //src
 #ifndef HANDLEOBJECT_C
 
 #include "mstd.h"
-
-struct list handle_array[HANDLE_SIZE];
 
 // ---- HANDLE OBJECT -----
 
@@ -76,26 +72,29 @@ void handle_object_init(struct handle_object *this, struct object *obj, void (*f
 
 // ---- HANDLE -----
 
-void handle_init()
+void handle_init(struct handle *this, int size)
 {
-    for(int i = 0; i < HANDLE_SIZE; i++)
-        list_init(&(handle_array[i]));
+    this->handle_array = malloc(sizeof(struct list) * size);
+    this->size = size;
+
+    for(int i = 0; i < size; i++)
+        list_init(&(this->handle_array[i]));
 }
 
-#define check_handle_type() if(handle_type < 0 || handle_type >= HANDLE_SIZE) return;
+#define check_handle_type() if(handle_type < 0 || handle_type >= this->size) return;
 
-void handle_add(int handle_type, struct handle_object *h_object)
+void handle_add(struct handle *this, int handle_type, struct handle_object *h_object)
 {
     check_handle_type();
 
-    h_object->node = list_push_back(&(handle_array[handle_type]), h_object);
+    h_object->node = list_push_back(&(this->handle_array[handle_type]), h_object);
 }
 
-void handle_remove(int handle_type, struct handle_object *h_object)
+void handle_remove(struct handle *this, int handle_type, struct handle_object *h_object)
 {
     check_handle_type();
 
-    list_remove_node(&(handle_array[handle_type]), h_object->node); 
+    list_remove_node(&(this->handle_array[handle_type]), h_object->node); 
 }
 
 void *for_each_handle_fun(struct handle_object *h_object, void *data, struct list_info *info)
@@ -104,63 +103,22 @@ void *for_each_handle_fun(struct handle_object *h_object, void *data, struct lis
     return 0;
 }
 
-void handle_dispatch(int handle_type, void *data)
+void handle_dispatch(struct handle *this, int handle_type, void *data)
 {
     check_handle_type();
 
-    list_for_each(&(handle_array[handle_type]), &for_each_handle_fun, data);
+    list_for_each(&(this->handle_array[handle_type]), &for_each_handle_fun, data);
 }
 
-void handle_delete()
+void handle_delete(struct handle *this)
 {
     for(int i = 0; i < HANDLE_SIZE; i++)
-        list_delete(&(handle_array[i]));
-}
+        list_delete(&(this->handle_array[i]));
 
-// ---- HANDLE FUNCTIONS -----
+    if(this->handle_array)
+        free(this->handle_array);
 
-void event_update()
-{
-    SDL_Event sdlevent;
-    while(SDL_PollEvent(&sdlevent))
-    {
-        //handle click events
-        if(sdlevent.type == SDL_MOUSEBUTTONDOWN)
-            click_update();
-
-        //todo: handle quit event
-        if(sdlevent.type==SDL_QUIT)
-        {
-            game_container.quit = true;
-        }
-
-        handle_dispatch(H_EVENT, &sdlevent);
-    }
-
-}
-
-void click_update()
-{
-    int x;
-    int y;
-    SDL_GetMouseState(&x, &y);
-
-    struct click_data c_data;
-    c_data.x = x;
-    c_data.y = y;
-    c_data.flag = 1;
-    handle_dispatch(H_CLICK, &c_data);
-}
-
-
-void update_update(double dt)
-{
-    handle_dispatch(H_UPDATE, &dt);
-}
-
-void draw_update(double dt)
-{
-    handle_dispatch(H_DRAW, &dt);
+    this->size = 0;
 }
 
 #endif

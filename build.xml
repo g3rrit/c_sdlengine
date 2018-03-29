@@ -5,7 +5,9 @@
         <flag output="build/program"/>
 
         <source value="src/main.c"/>
-        <source value="src/object/test_object.c"/>
+        <flag include="src/test"/>
+        <source value="src/test/test_object.c"/>
+        <source value="src/test/testscene.c"/>
 
     </target>
 
@@ -34,6 +36,7 @@
     <source value="src/object/handleobject.c"/>
 
     <flag include="src/scene"/>
+    <source value="src/scene/scene.c"/>
     <source value="src/scene/scenemanager.c"/>
 
     <flag include="src/text"/>

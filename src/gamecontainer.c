@@ -30,17 +30,17 @@ void game_container_delete();
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define TEST_OBJECT_C
-#include "test_object.c"
-#undef TEST_OBJECT_C
-
+#ifndef SCENEMANAGER_C
 #define SCENEMANAGER_C
 #include "scenemanager.c"
 #undef SCENEMANAGER_C
+#endif
 
+#ifndef FONTMANAGER_C
 #define FONTMANAGER_C
 #include "fontmanager.c"
 #undef FONTMANAGER_C
+#endif
 
 int game_container_init()
 {
@@ -92,18 +92,12 @@ void game_container_start()
     int FPS = 0;
     //fontManager.add("fpstxt","FPS:",gameState.WIDTH-100,5,60,15);
     //fontManager.add("fpsnum","00",gameState.WIDTH-40,5,40,15);
-    handle_init();
-
-    //          TEST
-    struct test_object t_object;
-    test_object_init(&t_object);
-    //          TEST
 
     while(!game_container.quit)
     {
 
         //update event
-        event_update();
+        scene_manager_event();
 
         gettimeofday(&currentTime,NULL);
         firstTime=(currentTime.tv_sec*1000000+currentTime.tv_usec)/1000000.0;
@@ -114,8 +108,6 @@ void game_container_start()
         while(unprocessedTime>=frameCap)
         {
             //update
-            update_update(frameCap);
-            //gameContainer.update((float)frameCap);
             scene_manager_update(frameCap);
 
             unprocessedTime=unprocessedTime-frameCap;
@@ -134,10 +126,8 @@ void game_container_start()
         {
             SDL_RenderClear(game_container.renderer);
             //draw
-            //gameContainer.draw();
-            draw_update(frameCap); 
             //
-            scene_manager_draw();
+            scene_manager_draw(frameCap);
             SDL_RenderPresent(game_container.renderer);
             frames++;
             render=false;

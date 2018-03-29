@@ -2,9 +2,11 @@
 #ifndef TEST_OBJECT_H
 #define TEST_OBJECT_H
 
+#ifndef OBJECT_C
 #define OBJECT_C
 #include "object.c"
 #undef OBJECT_C
+#endif
 
 #include "mstd.h"
 
@@ -18,7 +20,7 @@ struct test_object
     struct handle_object click_obj;
 };
 
-void test_object_init(struct test_object *this);
+void test_object_init(struct test_object *this, struct scene *scene_o);
 
 
 //---------- TESTOBJECT ---------- 
@@ -35,13 +37,13 @@ void test_object_update_event(struct object *obj, SDL_Event *event);
 
 void test_object_click_fun(struct object *obj, struct click_data *c_data);
 
-void test_object_init(struct test_object *this)
+void test_object_init(struct test_object *this, struct scene *scene_o)
 {
-    object_init(&(this->obj), this);
+    object_init(&(this->obj), this, scene_o);
     handle_object_init(&(this->event_obj), &(this->obj), &test_object_update_event);
     handle_object_init(&(this->click_obj), &(this->obj), &test_object_click_fun);
-    handle_add(H_CLICK, &(this->click_obj));
-    handle_add(H_EVENT, &(this->event_obj));
+    scene_add_handle(this->obj.scene_o, H_CLICK, &(this->click_obj));
+    scene_add_handle(this->obj.scene_o, H_EVENT, &(this->event_obj));
 }
 
 void test_object_update_event(struct object *obj, SDL_Event *event)
@@ -56,7 +58,7 @@ void test_object_update_event(struct object *obj, SDL_Event *event)
     {
         printf("pressed a button -> removing object from event vector\n");
         struct test_object *t_ob = obj->super;
-        handle_remove(H_EVENT, &t_ob->event_obj);
+        scene_remove_handle(obj->scene_o, H_EVENT, &t_ob->event_obj);
         printf("error here\n");
     }
 }

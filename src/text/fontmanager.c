@@ -28,8 +28,8 @@ void font_manager_init()
     TTF_Init();
     FONT_DEFAULT = TTF_OpenFont(FONT_DIR,30);
 
-    if(FONT_DEFAULT)
-        printf("error loading fonts [default}\n");
+    if(!FONT_DEFAULT)
+        printf("error loading font: [default]\nERROR: %s\n", TTF_GetError());
 }
 
 void font_manager_delete()
