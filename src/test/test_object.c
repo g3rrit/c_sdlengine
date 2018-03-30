@@ -61,6 +61,15 @@ void test_object_update_event(struct object *obj, SDL_Event *event)
         scene_remove_handle(obj->scene_o, H_EVENT, &t_ob->event_obj);
         printf("error here\n");
     }
+
+    if(event->key.keysym.sym == SDLK_q)
+    {
+        printf("pressed q button -> removing active scene from scenemanager\n");
+
+        scene_manager_pop();
+
+        printf("successfully poped scene of scenemanager\n");
+    }
 }
 
 void test_object_click_fun(struct object *obj, struct click_data *c_data)

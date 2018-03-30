@@ -72,7 +72,7 @@ void test_scene_init(struct test_scene *this)
 
     //text test
     this->ttext = malloc(sizeof(struct text));
-    text_init(this->ttext, "hello world");
+    //text_init(this->ttext, "hello world");
 
     //animated_sprite test
     this->tasprite = malloc(sizeof(struct animated_sprite));
@@ -102,7 +102,7 @@ void test_scene_draw(struct object *obj, double *dt)
     struct test_scene *this = obj->super;
     sprite_draw(this->tsprite);
     animated_sprite_draw(this->tasprite);
-    text_draw(this->ttext);
+    //text_draw(this->ttext);
 }
 
 void test_scene_delete(struct test_scene *this)
