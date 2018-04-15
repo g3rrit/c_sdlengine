@@ -5,4 +5,6 @@
 #define TEX_TEST2 "res/test2.png"
 #define TEX_TEST3 "res/test3.png"
 
+#define BOARD_TEX "res/board.png"
+
 #endif

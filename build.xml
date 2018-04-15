@@ -6,8 +6,8 @@
 
         <source value="src/main.c"/>
         <flag include="src/test"/>
-        <source value="src/test/test_object.c"/>
-        <source value="src/test/testscene.c"/>
+        <source value="src/test/boardobject.c"/>
+        <source value="src/test/gogamescene.c"/>
 
     </target>
 

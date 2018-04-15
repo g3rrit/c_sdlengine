@@ -8,6 +8,12 @@
 #undef OBJECT_C
 #endif
 
+#ifndef LIST_C
+#define LIST_C
+#include "list.c"
+#undef LIST_C
+#endif
+
 #define HANDLE_SIZE 4
 
 #define H_UPDATE 0
